@@ -1,0 +1,397 @@
+@import "tailwindcss";
+
+/* Hide Next.js Dev Indicator (N icon at bottom-left) */
+nextjs-portal,
+[nextjs-dev-overlay],
+[data-nextjs-dev-overlay],
+.nextjs-dev-overlay {
+  display: none !important;
+}
+
+/* Dark Mode Support - FULL PAGE COVERAGE WITH ENFORCEMENT */
+
+/* FORCE HTML background to respect theme */
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+/* Custom CSS Variables for programmatic access */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+html[data-theme="dark"] {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+}
+
+html[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Body must cover full viewport and respect theme */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure proper scrollbar colors */
+html.dark * {
+  scrollbar-color: #374151 #1e293b;
+}
+
+html:not(.dark) * {
+  scrollbar-color: #f3f4f6 #f1f1f1;
+}
+
+/* Ensure smooth transitions for ALL elements - COMPLETE COVERAGE */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Custom Scrollbar - Full styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #1e293b !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 10px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1d4ed8;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Sidebar-specific scrollbar styling - matches sidebar blue gradient */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #1e3a8a; /* Fallback */
+  background: linear-gradient(to bottom, #1e3a8a, #1e40af);
+  border-radius: 10px;
+  margin: 8px 0;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+html.dark .scrollbar-thin::-webkit-scrollbar-track {
+  background: #1e3a8a; /* Fallback */
+  background: linear-gradient(to bottom, #1e3a8a, #1e40af);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  border: 2px solid #1e3a8a;
+  background-clip: padding-box;
+}
+
+html.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.35);
+  border: 2px solid #1e3a8a;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: #1e40af;
+}
+
+html.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: #1e40af;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Voice Mode Orb Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 60px rgba(59, 130, 246, 0.6);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 80px rgba(59, 130, 246, 0.8);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes processing-hue {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+@keyframes scale-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.orb-pulsing {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.orb-processing {
+  animation: processing-hue 1.5s linear infinite;
+}
+
+.orb-speaking {
+  animation: scale-pulse 1.5s ease-in-out infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-400 {
+  animation-delay: 400ms;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE FIXES
+   All fixes for mobile alignment bugs
+======================================== */
+
+/* Topbar Layout Fixes - Desktop & Mobile */
+header {
+  justify-content: space-between !important;
+}
+
+/* Fix overflow on .topbar-left container */
+header > div:first-child {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+/* Fix overflow on inner div wrapping bot name and subtitle */
+header > div:first-child > div {
+  min-width: 0 !important;
+}
+
+/* Prevent .topbar-right from shrinking and add padding */
+header > div:last-child {
+  flex-shrink: 0 !important;
+  padding-left: 12px !important;
+}
+
+@media (max-width: 480px) {
+  /* Ensure header flex container is properly aligned */
+  header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+  
+  /* Left section - allow it to take available space */
+  header > div:first-child {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+  
+  /* Inner div with bot info */
+  header > div:first-child > div {
+    min-width: 0 !important;
+  }
+  
+  /* BUG 2: Topbar subtitle - make single line on mobile */
+  header .text-sm {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 11px !important;
+    max-width: 100% !important;
+  }
+  
+  /* Reduce title size on mobile and keep single line */
+  header h1 {
+    font-size: 13px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  /* Title and subtitle truncation on mobile ONLY if needed */
+  header h1,
+  header p.text-sm {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+  
+  /* BUG 3: Right topbar buttons misaligned */
+  header > div:last-child {
+    flex-shrink: 0 !important;
+  }
+  
+  header button.px-4.py-2 {
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+  }
+  
+  /* BUG 4: Welcome heading too large on mobile */
+  .max-w-4xl.mt-12 h2 {
+    font-size: 20px !important;
+    padding: 0 12px !important;
+  }
+  
+  .max-w-4xl.mt-12 p {
+    font-size: 13px !important;
+  }
+  
+  /* BUG 5: Send button cut off / not visible */
+  /* Hide button text labels, show only icons */
+  form.flex.gap-2 button span.hidden.sm\:inline {
+    display: none !important;
+  }
+  
+  /* Ensure all buttons in the form have fixed size and don't shrink */
+  form.flex.gap-2 > button[type="button"],
+  form.flex.gap-2 > button[type="submit"] {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Specifically target the Dictate button */
+  form.flex.gap-2 > button[title*="Dictate"] {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Specifically target Voice Mode button */
+  form.flex.gap-2 > button[title*="Voice Mode"] {
+    width: 40px !important;
+    min-width: 40px !important;
+    max-width: 40px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Specifically target Send button */
+  form.flex.gap-2 > button[type="submit"] {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Input bar container - ensure proper spacing */
+  form.flex.gap-2 {
+    gap: 8px !important;
+    padding: 8px 10px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
+  /* Input field - ensure it doesn't overflow */
+  form.flex.gap-2 > input[type="text"] {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    width: auto !important;
+    font-size: 13px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    height: 44px !important;
+  }
+  
+  /* Ensure the parent containers don't clip the buttons */
+  .border-t.p-4,
+  .max-w-4xl.mx-auto {
+    overflow: visible !important;
+  }
+  
+  /* BUG 6: Placeholder text cut off in input field */
+  form.flex.gap-2 input[type="text"] {
+    font-size: 13px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  
+  /* BUG 7: Quick action cards single column */
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 button {
+    padding: 14px 8px !important;
+    font-size: 12px !important;
+  }
+  
+  /* General mobile spacing */
+  .flex-1.flex.flex-col.min-w-0 {
+    overflow-x: hidden !important;
+  }
+}
+
+/* Additional responsive adjustments for tablets */
+@media (max-width: 768px) {
+  /* BUG 7: Quick action cards - 2 columns on mobile */
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
