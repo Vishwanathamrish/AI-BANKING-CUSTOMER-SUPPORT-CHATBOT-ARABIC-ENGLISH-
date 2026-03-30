@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    container_name: banking-ai-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - LOG_LEVEL=INFO
+      - VECTOR_DB_PATH=/app/vector_db
+      - CHUNK_SIZE=1000
+      - CHUNK_OVERLAP=200
+      - SIMILARITY_THRESHOLD=0.5
+    volumes:
+      - vector_data:/app/vector_db
+      - logs_data:/app/logs
+    restart: unless-stopped
+    networks:
+      - banking-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: ./frontend/nextjs_chat_ui
+      dockerfile: ../../Dockerfile
+      target: frontend
+    container_name: banking-ai-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - banking-network
+
+  # Redis for Caching (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: banking-ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - banking-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  vector_data:
+    driver: local
+  logs_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  banking-network:
+    driver: bridge
