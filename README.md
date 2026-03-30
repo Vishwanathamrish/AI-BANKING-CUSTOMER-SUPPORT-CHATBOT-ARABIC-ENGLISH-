@@ -115,6 +115,40 @@ GROQ_API_KEY=your_groq_api_key_here
 python initialize_vectorstore.py
 ```
 
+### Step 6: Install Frontend Dependencies (Next.js Chat UI)
+The frontend chat interface is built with Next.js and requires Node.js dependencies to be installed.
+
+**For Windows:**
+```bash
+# Navigate to the frontend chat-ui directory
+cd frontend\chat-ui
+
+# Install all required dependencies
+npm install
+```
+
+**For Linux/Mac:**
+```bash
+# Navigate to the frontend chat-ui directory
+cd frontend/chat-ui
+
+# Install all required dependencies
+npm install
+```
+
+**What gets installed:**
+- Next.js 16.1.7 framework
+- React 19.2.3
+- TypeScript support
+- Tailwind CSS for styling
+- Additional UI libraries (framer-motion, lucide-react, axios, etc.)
+
+**Important Notes:**
+- Make sure you're in the `frontend/chat-ui` directory, NOT just the `frontend` directory
+- The installation may take 1-2 minutes depending on your internet connection
+- If you see warnings about vulnerabilities, they are non-critical dev dependencies
+- After installation, you can verify by checking the `node_modules` folder exists
+
 ## 🚀 Quick Start
 
 ### Start Backend Server
@@ -125,12 +159,39 @@ uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 Backend will start on: `http://localhost:8000`
 
 ### Start Next.js Chat Interface
+**First-Time Setup:**
+Before running the frontend for the first time, ensure dependencies are installed:
+```bash
+cd frontend/chat-ui
+npm install  # Only needed once
+```
+
+**Start Development Server:**
 ```bash
 cd frontend/chat-ui
 npm run dev
 ```
 
 Chat interface will open at: `http://localhost:3000`
+
+**Troubleshooting Frontend Issues:**
+
+If you get `'next' is not recognized` error:
+```bash
+# Make sure you're in the correct directory
+cd frontend/chat-ui
+
+# Reinstall dependencies if needed
+npm install
+
+# Then start the server
+npm run dev
+```
+
+If you get `Missing script: "dev"` error:
+- Verify you're in `frontend/chat-ui` directory (not just `frontend`)
+- Check that `package.json` exists in the current directory
+- Run `npm install` to ensure all dependencies are installed
 
 ## 🔌 API Endpoints
 
