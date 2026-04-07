@@ -30,7 +30,6 @@ A production-ready, intelligent banking customer support chatbot with advanced R
 - [API Endpoints](#api-endpoints)
 - [Features Guide](#features-guide)
 - [Configuration](#configuration)
-- [Analytics](#analytics)
 - [Deployment](#deployment)
 - [Troubleshooting](#troubleshooting)
 
@@ -69,10 +68,6 @@ Analytics Tracker
    - Hallucination detection
    - Confidence-based routing
 
-4. **Analytics** (`backend/analytics.py`)
-   - Conversation tracking
-   - Metrics aggregation
-   - Failed query analysis
 
 ## 📦 Installation
 
@@ -241,39 +236,6 @@ Detect intent from a message.
 }
 ```
 
-### Analytics Endpoints
-
-#### GET /analytics/summary
-Get overall analytics summary.
-
-**Response:**
-```json
-{
-  "total_conversations": 150,
-  "unique_questions": 45,
-  "average_confidence": 0.78,
-  "average_response_time_ms": 1250,
-  "failed_query_count": 8,
-  "language_distribution": {
-    "English": 120,
-    "Arabic": 30
-  },
-  "intent_distribution": {...},
-  "top_questions": [...]
-}
-```
-
-#### GET /analytics/questions/top?limit=10
-Get most frequently asked questions.
-
-#### GET /analytics/intents
-Get intent distribution statistics.
-
-#### GET /analytics/languages
-Get language usage distribution.
-
-#### GET /analytics/failed?limit=20
-Get recent failed queries for review.
 
 ### Utility Endpoints
 
@@ -381,28 +343,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 - Default: 200 characters
 - Ensures continuity between chunks
 
-## 📊 Analytics
 
-### Analytics Dashboard
-
-The analytics system (`backend/analytics.py`) provides:
-
-1. **Key Metrics**
-   - Total conversations
-   - Average confidence score
-   - Average response time
-   - Failed query count
-
-2. **Data Storage**
-   - `logs/conversation_logs.json` - Raw conversation data
-   - `logs/metrics.json` - Aggregated metrics
-
-3. **Access via API**
-   - GET `/analytics/summary` - Overall statistics
-   - GET `/analytics/questions/top` - Top questions
-   - GET `/analytics/intents` - Intent distribution
-   - GET `/analytics/languages` - Language usage
-   - GET `/analytics/failed` - Failed queries
 
 ## 🐳 Deployment
 
@@ -515,10 +456,11 @@ Contributions welcome! Please:
 
 ## 📧 Support
 
+### Getting Help
 For questions or issues:
 - Check documentation above
-- Review analytics dashboard
-- Contact: support@banking-ai.com
+- 📧 **Email**: vishwanathamrish@gmail.com
+
 
 ---
 
