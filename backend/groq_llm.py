@@ -21,7 +21,7 @@ class GroqLLMService:
     Service for generating text responses using Groq API.
     
     Attributes:
-        model_name: The LLM model to use (default: llama-3.1-8b-instant)
+        model_name: The LLM model to use (default: openai/gpt-oss-20b)
         temperature: Controls randomness (0.0-1.0)
         max_tokens: Maximum tokens in response
         client: Groq client instance
@@ -29,9 +29,9 @@ class GroqLLMService:
     
     def __init__(
         self, 
-        model_name: str = "llama-3.1-8b-instant",
+        model_name: str = "openai/gpt-oss-20b",
         temperature: float = 0.2,
-        max_tokens: int = 200
+        max_tokens: int = 1024
     ):
         """
         Initialize the Groq LLM service.
@@ -39,7 +39,7 @@ class GroqLLMService:
         Args:
             model_name: Name of the Groq model to use
             temperature: Sampling temperature for response generation (0.1-0.2 recommended for banking)
-            max_tokens: Maximum number of tokens in response (150-200 recommended for short bullets)
+            max_tokens: Maximum completion tokens, including reasoning tokens
         """
         self.model_name = model_name
         self.temperature = temperature
@@ -49,9 +49,6 @@ class GroqLLMService:
         # Strict parameters for consistent output
         if temperature > 0.2:
             logger.warning(f"Temperature {temperature} may cause inconsistent outputs. Recommended: 0.1-0.2")
-        if max_tokens > 250:
-            logger.warning(f"max_tokens {max_tokens} may cause verbose responses. Recommended: 150-200")
-        
         # Verify API key is present
         if not os.getenv("GROQ_API_KEY"):
             logger.error("Groq API key not found in environment variables")
@@ -97,7 +94,8 @@ class GroqLLMService:
                 model=self.model_name,
                 messages=messages,
                 temperature=temperature if temperature is not None else self.temperature,
-                max_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+                max_completion_tokens=max_tokens if max_tokens is not None else self.max_tokens,
+                reasoning_effort="low",
                 stream=False
             )
             
@@ -151,7 +149,8 @@ class GroqLLMService:
                 model=self.model_name,
                 messages=messages,
                 temperature=self.temperature,
-                max_tokens=self.max_tokens,
+                max_completion_tokens=self.max_tokens,
+                reasoning_effort="low",
                 stream=False
             )
             
@@ -169,9 +168,9 @@ _groq_service = None
 
 
 def get_groq_service(
-    model_name: str = "llama-3.1-8b-instant",
+    model_name: str = "openai/gpt-oss-20b",
     temperature: float = 0.2,
-    max_tokens: int = 200
+    max_tokens: int = 1024
 ) -> GroqLLMService:
     """
     Get or create singleton Groq service instance.

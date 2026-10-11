@@ -60,7 +60,7 @@ class VectorStoreManager:
             
             self.index = FAISS.from_documents(
                 documents=documents,
-                embedding=self.embeddings_service.embeddings
+                embedding=self.embeddings_service
             )
             
             logger.info("FAISS index created successfully")
@@ -180,14 +180,26 @@ class VectorStoreManager:
             
             self.index = FAISS.load_local(
                 folder_path=load_path,
-                embeddings=self.embeddings_service.embeddings
+                embeddings=self.embeddings_service
             )
+
+            index_dimension = self.index.index.d
+            embedding_dimension = self.embeddings_service.get_embedding_dimension()
+            if index_dimension != embedding_dimension:
+                logger.error(
+                    "Vector index dimension mismatch: index=%s, embedding_model=%s. "
+                    "Rebuild the index with initialize_vectorstore.py.",
+                    index_dimension,
+                    embedding_dimension,
+                )
+                self.index = None
+                return False
             
             logger.info(f"Index loaded from: {load_path}")
             return True
             
         except Exception as e:
-            logger.error(f"Error loading index: {e}")
+            logger.exception("Error loading index: %r", e)
             return False
     
     def index_exists(self, index_name: str = "faiss_index") -> bool:

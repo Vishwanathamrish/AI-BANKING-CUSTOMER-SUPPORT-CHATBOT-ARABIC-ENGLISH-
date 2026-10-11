@@ -49,7 +49,7 @@ class RAGPipeline:
         self,
         embeddings_service: EmbeddingService,
         vector_store_manager: VectorStoreManager,
-        model_name: str = "llama-3.1-8b-instant",
+        model_name: str = "openai/gpt-oss-20b",
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
         similarity_threshold: float = 0.5
@@ -89,7 +89,7 @@ class RAGPipeline:
             self.llm = get_groq_service(
                 model_name=self.model_name,
                 temperature=0.2,  # Low temperature for deterministic output
-                max_tokens=300  # Controlled output length
+                max_tokens=1024  # Includes GPT-OSS reasoning and visible output
             )
             
             # Initialize text splitter

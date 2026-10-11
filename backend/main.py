@@ -80,7 +80,7 @@ def initialize_services():
         rag_pipeline = RAGPipeline(
             embeddings_service=embeddings_service,
             vector_store_manager=vector_store_manager,
-            model_name=os.getenv("LLM_MODEL", "llama-3.1-8b-instant"),
+            model_name=os.getenv("LLM_MODEL", "openai/gpt-oss-20b"),
             chunk_size=int(os.getenv("CHUNK_SIZE", "1000")),
             chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "200")),
             similarity_threshold=float(os.getenv("SIMILARITY_THRESHOLD", "0.5"))
@@ -97,8 +97,10 @@ def initialize_services():
         
         # Try to load existing vector index
         if vector_store_manager.index_exists():
-            vector_store_manager.load_index()
-            logger.info("Loaded existing vector index")
+            if vector_store_manager.load_index():
+                logger.info("Loaded existing vector index")
+            else:
+                logger.error("Vector index exists but could not be loaded")
         else:
             logger.warning("No vector index found. Please initialize with documents.")
         

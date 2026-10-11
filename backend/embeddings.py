@@ -9,6 +9,7 @@ import os
 import logging
 from typing import List, Optional
 from sentence_transformers import SentenceTransformer
+from langchain_core.embeddings import Embeddings
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -17,7 +18,7 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 
-class EmbeddingService:
+class EmbeddingService(Embeddings):
     """
     Service for generating text embeddings using Sentence Transformers.
     
@@ -92,6 +93,17 @@ class EmbeddingService:
         except Exception as e:
             logger.error(f"Error generating batch embeddings: {e}")
             return []
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        """Implement LangChain's embedding interface for document indexing."""
+        return self.generate_embeddings(texts)
+
+    def embed_query(self, text: str) -> List[float]:
+        """Implement LangChain's embedding interface for similarity searches."""
+        embedding = self.generate_embedding(text)
+        if embedding is None:
+            raise RuntimeError("Failed to generate query embedding")
+        return embedding
     
     def get_embedding_dimension(self) -> int:
         """

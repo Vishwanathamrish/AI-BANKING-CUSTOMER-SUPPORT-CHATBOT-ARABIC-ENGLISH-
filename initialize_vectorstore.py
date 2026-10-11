@@ -116,9 +116,9 @@ if __name__ == "__main__":
     success = initialize_vector_store()
     
     if success:
-        print("\n✓ Success! You can now start the chatbot.")
+        print("\nSuccess! You can now start the chatbot.")
         print("\nTo start:")
         print("  Backend: uvicorn backend.main:app --reload")
         print("  Frontend: streamlit run frontend/streamlit_app.py")
     else:
-        print("\n✗ Initialization failed. Check logs for details.")
+        print("\nInitialization failed. Check logs for details.")

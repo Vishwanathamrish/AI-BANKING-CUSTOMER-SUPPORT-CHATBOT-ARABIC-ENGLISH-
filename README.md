@@ -320,7 +320,7 @@ CHUNK_SIZE=1000
 CHUNK_OVERLAP=200
 SIMILARITY_THRESHOLD=0.5
 VECTOR_DB_PATH=./vector_db
-LLM_MODEL=llama-3.1-8b-instant
+LLM_MODEL=openai/gpt-oss-20b
 
 # Optional - Frontend Configuration
 NEXT_PUBLIC_API_URL=http://localhost:8000
